@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM nvidia/cuda:12.9.0-base-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -7,9 +7,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     curl \
     git \
-    nodejs \
-    npm \
+    ca-certificates \
+    gnupg \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js 20.x from NodeSource
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
 
 # Install uv (Python dependency manager)
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
